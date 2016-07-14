@@ -1,4 +1,4 @@
-package com.itera.timeseriesgrouper.timeseriesgrouper;
+package com.itera.util;
 
 public class Metrics implements java.io.Serializable {
 
@@ -21,7 +21,7 @@ public class Metrics implements java.io.Serializable {
 		this.metricType = metricType;
 	}
 
-	public double dist(Double[] a1, Double[] a2, Object... params) {
+	public double dist(double[] a1, double[] a2, Object... params) {
 		switch (this.metricType) {
 		case EUCLIDEAN_DIST:
 			return this.euclidean(a1, a2);
@@ -34,7 +34,7 @@ public class Metrics implements java.io.Serializable {
 		}
 	}
 	
-	public double euclidean(Double[] a1, Double[] a2) {
+	public double euclidean(double[] a1, double[] a2) {
 		if (a1.length != a2.length)
 			throw new RuntimeException("Time series of different size.");
 		double sum = 0;
@@ -44,7 +44,7 @@ public class Metrics implements java.io.Serializable {
 		return Math.sqrt(sum);
 	}
 
-	private double ce(Double[] a) {
+	private double ce(double[] a) {
 		double v = 0;
 		for (int i = 0; i < a.length - 1; i++) {
 			v += Math.pow(a[i] - a[i + 1], 2);
@@ -52,14 +52,14 @@ public class Metrics implements java.io.Serializable {
 		return Math.sqrt(v);
 	}
 
-	public double cid(Double[] a1, Double[] a2) {
+	public double cid(double[] a1, double[] a2) {
 		double ce1 = ce(a1);
 		double ce2 = ce(a2);
 		double cf = Math.max(ce1, ce2) / Math.min(ce1, ce2);
 		return this.euclidean(a1, a2) * cf;
 	}
 
-	public double dtw(Double[] a1, Double[] a2) {
+	public double dtw(double[] a1, double[] a2) {
 		int n = a1.length;
 		int m = a2.length;
 		double[][] D = new double[n][m];
