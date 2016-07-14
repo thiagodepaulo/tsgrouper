@@ -105,6 +105,6 @@ public class App {
 		// clustering results. assignment <TS_ID, CLUSTER_ID>
 		JavaPairRDD<Long, Integer> assig = tsclus.getClusterAssignment();
 
-		System.out.println(assig.collect());
+		System.out.println(assig.collect()); 
 	}
 }
