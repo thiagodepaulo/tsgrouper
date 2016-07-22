@@ -1,5 +1,7 @@
 package com.itera.graph;
 
+import java.nio.file.Files;
+
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 
@@ -57,7 +59,6 @@ public class SparkKNN {
 			}
 			return edges_list;
 		});
-
 		return edges3;
 	}
 

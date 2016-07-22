@@ -1,5 +1,7 @@
 package com.itera.ts.clustering;
 
+import java.util.Map;
+
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.mllib.clustering.KMeansModel;
@@ -31,25 +33,25 @@ public class TSClustering {
 		this.alg = alg;
 		this.metric = metric;
 	}
- 
+
 	public TSClustering(int K) {
 		this(K, algType.GRAPH_CLUSTERING, new Metrics(Metrics.type.EUCLIDEAN_DIST));
 	}
-	
+
 	public TSClustering(int K, algType alg) {
 		this(K, alg, new Metrics(Metrics.type.EUCLIDEAN_DIST));
 	}
 
 	public void doClustering(Object... args) {
 		JavaPairRDD<Long, double[]> timeSeries = (JavaPairRDD<Long, double[]>) args[0];
-		if (this.alg == algType.GRAPH_CLUSTERING) {			
+		if (this.alg == algType.GRAPH_CLUSTERING) {
 			int numNN = (int) args[1]; // number of nearest neighbours
-			int maxIterations = 40;
+			int maxIterations = 15;
 			if (args.length > 2) {
 				maxIterations = (int) args[2];
 			}
 			graphClustering(timeSeries, numNN, maxIterations);
-		} else if (this.alg == algType.KMEANS) {			
+		} else if (this.alg == algType.KMEANS) {
 			int maxIterations = 50;
 			if (args.length > 1) {
 				maxIterations = (int) args[1];
@@ -79,10 +81,16 @@ public class TSClustering {
 			Vector point = Vectors.dense(x._2);
 			int clusId = model.predict(point);
 			return new Tuple2<Long, Integer>(x._1, clusId);
-		}); 
-	}		
+		});
+	}
 
 	public JavaPairRDD<Long, Integer> getClusterAssignment() {
 		return this.assignment;
+	}
+
+	public Map<Integer, Iterable<Long>> getClustersMembers() {
+		return this.assignment.mapToPair(x -> {
+			return new Tuple2<Integer, Long>(x._2, x._1);
+		}).groupByKey().collectAsMap();
 	}
 }
