@@ -10,7 +10,7 @@ import com.itera.util.Util;
 import scala.Tuple2;
 import scala.Tuple3;
 
-public class SparkKNN {
+public class SparkKNN { 
 	
 	public static JavaRDD<Tuple3<Long, Long, Double>> createKnnGraph(JavaPairRDD<Long, double[]> timeSeries, int numNN,
 			Metrics metric) {
