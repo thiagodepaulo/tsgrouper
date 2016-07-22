@@ -42,7 +42,7 @@ public class SparkKNN {
 			Long id = x._1;
 			Iterable<Tuple2<Long, Double>> neigList = x._2;
 			java.util.Vector<Tuple2<Long, Double>> maxKnn = new java.util.Vector<>(numNN);
-			int id_min = 0;
+			int id_min = 0; 
 			for (Tuple2<Long, Double> tuple : neigList) {
 				if (id != tuple._1) {
 					id_min = Util.argMin(maxKnn, numNN);
