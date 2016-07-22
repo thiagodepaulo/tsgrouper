@@ -1,7 +1,5 @@
 package com.itera.graph;
 
-import java.nio.file.Files;
-
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 
@@ -17,7 +15,7 @@ public class SparkKNN {
 	public static JavaRDD<Tuple3<Long, Long, Double>> createKnnGraph(JavaPairRDD<Long, double[]> timeSeries, int numNN,
 			Metrics metric) {
 
-		// combine all timeseries ids 2 by 2
+		// combine all timeseries ids -- 2 by 2
 		JavaPairRDD<Tuple2<Long, double[]>, Tuple2<Long, double[]>> pairs = timeSeries.cartesian(timeSeries);
 		JavaPairRDD<Long, Tuple2<Long, Double>> edges = pairs.mapToPair(x -> {
 			long id1 = x._1._1;
